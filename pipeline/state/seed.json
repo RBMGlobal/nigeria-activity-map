@@ -1,6 +1,5 @@
 {
   "schema_version": 1,
-  "index_sha256": "f4ad6a77db057340a7694be424fe8847d4581e16cbb1fb5bb62353c3d97a3c54",
-  "gdelt_state_sha256": "fb6e80a85719aaa97da7197b90c018dbc2ad21525a4a61426deabc9db0242b7a",
-  "source": "Verified working map and corresponding daily ingestion state; copied 2026-10-25. Published index matched working map byte-for-byte."
+  "index_sha256": "6dcc6ebfeae0059e69ad84f46b9682b71b25b77e2f872dbced0a367dbeaa0a25",
+  "gdelt_state_sha256": "fb6e80a85719aaa97da7197b90c018dbc2ad21525a4a61426deabc9db0242b7a"
 }
