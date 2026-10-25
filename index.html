@@ -316,6 +316,8 @@ Object.values(groups).forEach(g => {
 
 // ---------- layers ----------
 const heat = L.heatLayer([], { radius: 22, blur: 16, maxZoom: 11, minOpacity: 0.25 });
+// One canvas renderer avoids thousands of individual SVG elements.
+const incidentRenderer = L.canvas({ padding: 0.5 });
 const pts  = L.layerGroup();
 const gpts = L.layerGroup();   // GDELT news-derived, toggled independently
 const rwpts = L.layerGroup(); // Report groups, never included in the fatality heatmap.
@@ -327,39 +329,51 @@ let rwLimit = 20;
 function fmt(ts) {
   return new Date(ts).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 }
+// Source metadata is external content; render it as text, never executable HTML.
+function escapeHTML(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g,
+    c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
+}
+function sourceURL(value) {
+  try {
+    const u = new URL(value);
+    return ['http:', 'https:'].includes(u.protocol) && !u.username && !u.password ? u.href : '';
+  } catch (_) { return ''; }
+}
 function popupHtml(e) {
   const t = TYPE[e.t];
   let h = '<div class="pt">' + fmt(e.ts) + (e.de !== e.d ? ' → ' + fmt(Date.parse(e.de + 'T00:00:00Z')) : '') + '</div>';
   h += '<span class="tv" style="background:' + t.color + '">' + t.label + '</span><br>';
-  h += '<b>Where:</b> ' + (e.w || 'n/a') + (e.s ? ', ' + e.s : '') + '<br>';
-  h += '<b>Parties:</b> ' + e.a + ' vs ' + e.b + '<br>';
-  if (e.h) h += '<b>Reported:</b> “' + e.h + '”<br>';
-  h += '<b>Fatalities (best est.):</b> ' + e.k;
-  if (e.c > 0) h += ' <span style="color:#a06">(' + e.c + ' civilian' + (e.c > 1 ? 's' : '') + ')</span>';
+  h += '<b>Where:</b> ' + escapeHTML(e.w || 'n/a') + (e.s ? ', ' + escapeHTML(e.s) : '') + '<br>';
+  h += '<b>Parties:</b> ' + escapeHTML(e.a) + ' vs ' + escapeHTML(e.b) + '<br>';
+  if (e.h) h += '<b>Reported:</b> “' + escapeHTML(e.h) + '”<br>';
+  h += '<b>Fatalities (best est.):</b> ' + escapeHTML(e.k);
+  if (e.c > 0) h += ' <span style="color:#a06">(' + escapeHTML(e.c) + ' civilian' + (e.c > 1 ? 's' : '') + ')</span>';
   return h;
 }
 
 function gTooltipHtml(e) {
   const head = headlineFromUrl(e.u);
-  let h = '<b>' + fmt(e.ts) + ' · ' + cameoDesc(e) + '</b>';
-  h += '<br>' + (head || ((e.a || '?') + (e.b ? ' vs ' + e.b : '') + (e.s ? ' — ' + e.s : '')));
+  let h = '<b>' + fmt(e.ts) + ' · ' + escapeHTML(cameoDesc(e)) + '</b>';
+  h += '<br>' + escapeHTML(head || ((e.a || '?') + (e.b ? ' vs ' + e.b : '') + (e.s ? ' — ' + e.s : '')));
   return '<div style="max-width:240px;white-space:normal">' + h + '</div>';
 }
 
 function gPopupHtml(e) {
   const t = GTYPE[e.r];
   const head = headlineFromUrl(e.u);
+  const url = sourceURL(e.u);
   let h = '<div class="pt">' + fmt(e.ts) + '</div>';
   h += '<span class="tv" style="background:' + t.color + ';color:#111">' + t.label + ' — news-derived</span><br>';
-  h += '<b>Action:</b> ' + cameoDesc(e) + (e.e ? ' <span style="color:#888">(CAMEO ' + e.e + ')</span>' : '') + '<br>';
-  if (head) h += '<b>Reported:</b> \u201C' + head + '\u201D' +
-                 (domainOf(e.u) ? ' <span style="color:#888">— ' + domainOf(e.u) + '</span>' : '') + '<br>';
-  h += '<b>Where:</b> ' + (e.w || 'n/a') + (e.s ? ', ' + e.s : '') +
+  h += '<b>Action:</b> ' + escapeHTML(cameoDesc(e)) + (e.e ? ' <span style="color:#888">(CAMEO ' + escapeHTML(e.e) + ')</span>' : '') + '<br>';
+  if (head) h += '<b>Reported:</b> “' + escapeHTML(head) + '”' +
+                 (domainOf(e.u) ? ' <span style="color:#888">— ' + escapeHTML(domainOf(e.u)) + '</span>' : '') + '<br>';
+  h += '<b>Where:</b> ' + escapeHTML(e.w || 'n/a') + (e.s ? ', ' + escapeHTML(e.s) : '') +
        ' <span style="color:#888">(' + (GPREC[e.g] || '') + ')</span><br>';
-  if (e.a || e.b) h += '<b>Parties:</b> ' + (e.a || '?') + (e.b ? ' vs ' + e.b : '') + '<br>';
-  h += '<b>Coverage:</b> ' + e.n + ' article' + (e.n > 1 ? 's' : '') +
-       (e.x > 1 ? ' · ' + e.x + ' merged reports' : '');
-  if (e.u) h += '<br><a href="' + e.u + '" target="_blank" rel="noopener">source article</a>';
+  if (e.a || e.b) h += '<b>Parties:</b> ' + escapeHTML(e.a || '?') + (e.b ? ' vs ' + escapeHTML(e.b) : '') + '<br>';
+  h += '<b>Coverage:</b> ' + escapeHTML(e.n) + ' article' + (e.n > 1 ? 's' : '') +
+       (e.x > 1 ? ' · ' + escapeHTML(e.x) + ' merged reports' : '');
+  if (url) h += '<br><a href="' + escapeHTML(url) + '" target="_blank" rel="noopener noreferrer">source article</a>';
   h += '<br><span style="color:#999;font-size:10.5px">GDELT machine-coded — unverified</span>';
   return h;
 }
@@ -376,10 +390,11 @@ function rebuild() {
   pts.clearLayers();
   filtered.forEach(e => {
     L.circleMarker([e.pla, e.plo], {
+      renderer: incidentRenderer,
       radius: Math.min(16, 4 + Math.sqrt(e.k) * 1.1),
       color: '#ffffff', weight: 1, opacity: 0.9,
       fillColor: TYPE[e.t].color, fillOpacity: 0.85
-    }).bindPopup(popupHtml(e), { maxWidth: 320 }).addTo(pts);
+    }).bindPopup(() => popupHtml(e), { maxWidth: 320 }).addTo(pts);
   });
   document.getElementById('nEvents').textContent = filtered.length.toLocaleString();
   document.getElementById('nDeaths').textContent = filtered.reduce((s, e) => s + e.k, 0).toLocaleString();
@@ -387,11 +402,12 @@ function rebuild() {
   gpts.clearLayers();
   gfiltered.forEach(e => {
     L.circleMarker([e.pla, e.plo], {
+      renderer: incidentRenderer,
       radius: Math.min(11, 3.5 + Math.sqrt(e.n)),
       color: '#ffffff', weight: 1, opacity: 0.9, dashArray: '2,2',
       fillColor: GTYPE[e.r].color, fillOpacity: 0.72
-    }).bindPopup(gPopupHtml(e), { maxWidth: 320 })
-      .bindTooltip(gTooltipHtml(e), { direction: 'top', opacity: 0.94, sticky: true })
+    }).bindPopup(() => gPopupHtml(e), { maxWidth: 320 })
+      .bindTooltip(() => gTooltipHtml(e), { direction: 'top', opacity: 0.94, sticky: true })
       .addTo(gpts);
   });
   document.getElementById('nGdelt').textContent = gfiltered.length.toLocaleString();
