@@ -124,6 +124,26 @@ or grant additional reuse rights.
 from the existing seed passed without ingestion or publication: 2,291 UCDP records
 through 30 September 2026; 1,605 GDELT records with all 32 daily inputs from
 23 September through 24 October; heat 1,331 records/279 cells through 24 October.
-The complete two-panel PNG was visually inspected. Hosted Linux execution and live
-UCDP authentication still require the first GitHub Actions run and its deployment
-verification; local offline success is not a claim that those completed.
+The complete two-panel PNG was visually inspected. These counts describe the local
+pre-deployment seed, not the later live refresh.
+
+## Verified hosted activation — 25 October 2026
+
+[First complete hosted run](https://github.com/RBMGlobal/nigeria-activity-map/actions/runs/40231155411)
+and [parser regression follow-up](https://github.com/RBMGlobal/nigeria-activity-map/actions/runs/40231969914)
+both succeeded on GitHub's Linux runner with Python 3.12. The follow-up passed 39
+Python and four JavaScript checks, authenticated to UCDP with the encrypted
+`UCDP_TOKEN` secret, refreshed the real sources, rendered and validated the image,
+committed the complete release/state together, deployed Pages and verified the
+live asset bytes against the release manifest.
+
+The verified refresh contained 2,291 UCDP records through 30 September 2026 and
+1,601 GDELT records, with all 32 daily inputs from 23 September through
+24 October 2026. Heat contained 1,327 records in 278 cells. The optional ReliefWeb
+snapshot contained 194 reports, latest publication 22 October. These are dated
+activation observations; use the current public `release.json` for later runs.
+
+Routine events updates run at 11:30 and 15:30 Europe/London. The company repository
+synchronizes verified heat and checks public sites at 12:15 and 16:15. Old desktop
+schedules are paused. Source-reviewed polling assessments and weekly editorial
+briefs remain manual work.
