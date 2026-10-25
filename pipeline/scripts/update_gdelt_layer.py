@@ -39,6 +39,7 @@ import urllib.request
 import zipfile
 from datetime import date, timedelta
 from pathlib import Path
+from embedded_data import load_json, replace_json
 
 ROOTS = {"14", "18", "19", "20"}   # protest, assault, fight, mass violence
 GEO_TYPES = {"2", "3", "4", "5"}   # ADM1, ADM2, city, landmark (drop country-level)
@@ -73,10 +74,7 @@ def embedded_json(events):
 
 
 def parse_array(html, name):
-    m = re.search(rf"const {name} = (\[.*?\]);", html, re.S)
-    if not m:
-        sys.exit(f"ERROR: could not locate `const {name} = [...];` in HTML")
-    return json.loads(m.group(1))
+    return load_json(html, name)
 
 
 def clean_url(u):
@@ -254,11 +252,7 @@ def main():
 
     # ---- rewrite HTML ----
     ev_json = embedded_json(merged)
-    new_html, n = re.subn(r"const GDELT_EVENTS = \[.*?\];",
-                          lambda _: f"const GDELT_EVENTS = {ev_json};",
-                          html, count=1, flags=re.S)
-    if n != 1:
-        sys.exit("ERROR: GDELT_EVENTS marker not found — HTML not modified")
+    new_html = replace_json(html, "GDELT_EVENTS", ev_json)
 
     if merged:
         gmax = date.fromisoformat(max(e["d"] for e in merged)).strftime("%d %b %Y")

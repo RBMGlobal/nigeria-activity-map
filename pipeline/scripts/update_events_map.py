@@ -19,6 +19,7 @@ import urllib.request
 import urllib.error
 from datetime import date
 from pathlib import Path
+from embedded_data import replace_json
 
 WINDOW_MONTHS = 24
 COUNTRY = 475  # Nigeria, Gleditsch & Ward code
@@ -205,13 +206,7 @@ def main():
     html = HTML_PATH.read_text(encoding="utf-8")
 
     ev_json = embedded_json(events)
-    new_html, n = re.subn(
-        r"const EVENTS = \[.*?\];",
-        lambda _: f"const EVENTS = {ev_json};",
-        html, count=1, flags=re.S,
-    )
-    if n != 1:
-        sys.exit("ERROR: could not locate `const EVENTS = [...];` in HTML")
+    new_html = replace_json(html, "EVENTS", ev_json)
 
     def mon(iso):
         return date.fromisoformat(iso).strftime("%b %Y")

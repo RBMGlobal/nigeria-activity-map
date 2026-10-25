@@ -29,6 +29,7 @@ import sys
 import urllib.request
 from datetime import date, timedelta
 from pathlib import Path
+from embedded_data import load_json
 
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
@@ -143,14 +144,11 @@ def load_mosaic():
 
 def load_events():
     html = HTML_PATH.read_text(encoding="utf-8")
-    m = re.search(r"const EVENTS = (\[.*?\]);", html, re.S)
-    if not m:
-        sys.exit("ERROR: could not locate EVENTS array in Nigeria_Events_Map.html")
-    gm = re.search(r"const GDELT_EVENTS = (\[.*?\]);", html, re.S)
-    gdelt = json.loads(gm.group(1)) if gm else []
+    events = load_json(html, "EVENTS")
+    gdelt = load_json(html, "GDELT_EVENTS", required=False) or []
     sub = re.search(r'<div class="sub">(.*?)</div>', html)
     source = (sub.group(1) if sub else "UCDP GED").split("·")[0].strip()
-    return json.loads(m.group(1)), gdelt, source
+    return events, gdelt, source
 
 
 def country_rings(feature):

@@ -21,11 +21,14 @@ import sys
 import tempfile
 from zoneinfo import ZoneInfo
 
+sys.path.insert(0, str(Path(__file__).resolve().parent / "scripts"))
+from embedded_data import load_json
+
 LONDON = ZoneInfo("Europe/London")
 SCRIPTS = (
     "update_events_map.py", "update_gdelt_layer.py", "update_reliefweb_layer.py",
     "state_data.py", "render_events_lastweek.py", "validate_map_release.py",
-    "refresh_sentiment_heat.py",
+    "refresh_sentiment_heat.py", "embedded_data.py",
 )
 GEODATA = (
     "ne_50m_west_africa.geojson", "ne_110m_admin_0_countries.geojson",
@@ -64,9 +67,7 @@ def file_metadata(path):
 
 
 def parse_array(text, name):
-    matches = re.findall(r"const " + name + r"\s*=\s*(\[.*?\]);", text, re.S)
-    require(len(matches) == 1, "Missing or duplicated " + name)
-    result = json.loads(matches[0])
+    result = load_json(text, name)
     require(isinstance(result, list) and len(result) > 100, "Unexpectedly empty " + name)
     for event in result:
         require(isinstance(event, dict), "Invalid " + name + " event")
@@ -253,9 +254,8 @@ def build(repo, output, *, token="", retained=False, now=None, runner=run_script
         _, gdelt, coverage = validate_source(text, state, today)
         if sources:
             coverage["ucdp"]["source_versions"] = sources
-        rw = re.search(r"const RELIEFWEB_META = (\{.*?\});", text, re.S)
-        if rw:
-            meta = json.loads(rw[1])
+        meta = load_json(text, "RELIEFWEB_META", dict, required=False)
+        if meta:
             coverage["reliefweb"] = {key: meta[key] for key in
                                      ("from", "to", "fetched_at", "latest_publication", "count") if key in meta}
             coverage["reliefweb"]["refresh"] = "retained" if retained or warnings else "checked"

@@ -111,7 +111,7 @@ than silently accepting a partial response. UCDP and GDELT JSON output escapes H
 script delimiters without changing decoded data. GDELT uses HTTPS for the same
 daily archives (both endpoints returned 200 for 24 October during setup). The heat
 script's publisher import and --publish branch are removed; aggregation is unchanged.
-All other copied scripts are byte-identical to the source workspace.
+Embedded data extraction and replacement now use a shared JSON decoder across collectors, renderer, validator and builder. Literal `];` or `};` in a source string cannot truncate the value. Declaration uniqueness and terminating semicolons are checked; JSON values, collection rules and surrounding HTML are preserved. The helper is included in each isolated build workspace. The provenance register identifies these bounded parser changes; other copied scripts remain byte-identical to their source versions.
 
 The satellite mosaic retains its Esri/Maxar/Earthstar attribution in metadata and
 rendered output. Natural Earth vector files remain unchanged. These files are

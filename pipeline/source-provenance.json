@@ -5,17 +5,18 @@
   "scripts": {
     "update_events_map.py": {
       "original_sha256": "669322181b6bbe4d15725c0c97e246aad7ab499e6551cfffb3e12c2f66df46a3",
-      "packaged_sha256": "20d87965909ebbb57660660a88de456ec55d928215f3e37d8f9c70a440678ee5",
-      "portability_change": "Added strict response/pagination completeness checks and script-safe JSON embedding; collection selection and version discovery unchanged."
+      "packaged_sha256": "aed3b3783d5265135358957db3e054c5641b7bceead8d536782b73074fa3bbd2",
+      "portability_change": "Added strict response/pagination completeness checks and script-safe JSON embedding; collection selection and version discovery unchanged. Uses the shared JSON decoder to locate embedded data boundaries; punctuation inside source strings no longer truncates extraction or replacement. Data selection and values unchanged."
     },
     "update_gdelt_layer.py": {
       "original_sha256": "d6c9ff9ffe67c1b9113b93657a49828089df7e5a24f27ecb430eaaf3645a2cf4",
-      "packaged_sha256": "3950d13b8616811ee6862c3780e26eeb50da27b6c48417c4a3209c407dc4c0a7",
-      "portability_change": "Uses HTTPS for identical daily archive paths and script-safe JSON embedding; filters/deduplication/ingestion algorithm unchanged."
+      "packaged_sha256": "b1fe1ea089b7eac21b04f338ab88ed28e81aa1c446332150ea47ab531c29c3c8",
+      "portability_change": "Uses HTTPS for identical daily archive paths and script-safe JSON embedding; filters/deduplication/ingestion algorithm unchanged. Uses the shared JSON decoder to locate embedded data boundaries; punctuation inside source strings no longer truncates extraction or replacement. Data selection and values unchanged."
     },
     "update_reliefweb_layer.py": {
       "original_sha256": "f5cf5f6ed0c38d0fdea65c2e088daa9f07690b79ae5344e613398727c2a043e5",
-      "packaged_sha256": "f5cf5f6ed0c38d0fdea65c2e088daa9f07690b79ae5344e613398727c2a043e5"
+      "packaged_sha256": "3a2c4e8ef68fb871988f88ab37ace5d5d82c6dd64d6bdf095e74155cbcc791ff",
+      "portability_change": "Uses the shared JSON decoder to locate embedded data boundaries; punctuation inside source strings no longer truncates extraction or replacement. Data selection and values unchanged."
     },
     "state_data.py": {
       "original_sha256": "de6b6134bf9b30cd9bf7d1c22576df0806cc1ed6810f7207878e307fb804af1e",
@@ -23,11 +24,13 @@
     },
     "render_events_lastweek.py": {
       "original_sha256": "5348d6e7e8ad3298e4b0c73ea430f1a744bf5594bc1f7d658d20d5f27dda59d5",
-      "packaged_sha256": "5348d6e7e8ad3298e4b0c73ea430f1a744bf5594bc1f7d658d20d5f27dda59d5"
+      "packaged_sha256": "d5406c7b4f55b5843f5c1ec39c5b8288af7155b17deff7d072866fe5d63d0123",
+      "portability_change": "Uses the shared JSON decoder to locate embedded data boundaries; punctuation inside source strings no longer truncates extraction or replacement. Data selection and values unchanged."
     },
     "validate_map_release.py": {
       "original_sha256": "4c1dd0e6470e187823d99b30f7d13764168b07f11d8b396a422f36a431f3ecdd",
-      "packaged_sha256": "4c1dd0e6470e187823d99b30f7d13764168b07f11d8b396a422f36a431f3ecdd"
+      "packaged_sha256": "f61897e8b0c05a5a79d8168aea74c178da982355a22c7266c06a54c587fcee2d",
+      "portability_change": "Uses the shared JSON decoder to locate embedded data boundaries; punctuation inside source strings no longer truncates extraction or replacement. Data selection and values unchanged."
     },
     "refresh_sentiment_heat.py": {
       "original_sha256": "75671b6b7ef5be6edc7dc085631406caf1b893f622e6c23982ed9341da6fc3e4",
@@ -51,6 +54,12 @@
     "nigeria_sat_z8.png": {
       "sha256": "92a10e77af4ae0367bad24555ce96234c9bf396e59f1f18acfdccdbc7be41fff",
       "bytes": 7615892
+    }
+  },
+  "hosted_helpers": {
+    "embedded_data.py": {
+      "sha256": "840d0fa2df9305f91a898c548d3291ffdfb9499b8b1835a5ab2f48475d64875c",
+      "purpose": "JSONDecoder.raw_decode extraction/replacement with unique line-start declarations and terminating-semicolon validation."
     }
   }
 }

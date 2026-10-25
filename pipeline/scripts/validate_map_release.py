@@ -4,6 +4,7 @@ import json
 import re
 from datetime import date,timedelta
 from pathlib import Path
+from embedded_data import load_json
 
 ROOT=Path(__file__).resolve().parent
 PROJECT=ROOT.parent
@@ -14,9 +15,7 @@ def validate():
     assert 'L.map(' in text, 'Map application missing'
     arrays={}
     for name in ['EVENTS','GDELT_EVENTS']:
-        m=re.search(r'const '+name+r'\s*=\s*(\[.*?\]);',text,re.S)
-        assert m, 'Missing '+name
-        arrays[name]=json.loads(m[1])
+        arrays[name]=load_json(text,name)
         assert len(arrays[name])>100, 'Unexpectedly empty '+name
         for event in arrays[name]:
             date.fromisoformat(event['d'])

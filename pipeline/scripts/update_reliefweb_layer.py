@@ -17,6 +17,7 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from embedded_data import load_json
 from zoneinfo import ZoneInfo
 
 from state_data import STATE_CENTROIDS
@@ -147,10 +148,9 @@ def refresh(force=False):
     html = HTML_PATH.read_text(encoding="utf-8")
     if html.count(START) != 1 or html.count(END) != 1:
         raise ValueError("ReliefWeb data markers missing or duplicated; map left unchanged")
-    old = re.search(r"const RELIEFWEB_META = (\{.*?\});", html, re.S)
+    old_meta = load_json(html, "RELIEFWEB_META", dict, required=False)
     now = datetime.now(timezone.utc)
-    if old and not force:
-        old_meta = json.loads(old[1])
+    if old_meta and not force:
         stamp = old_meta.get("fetched_at")
         if stamp and 0 <= (now - datetime.fromisoformat(stamp)).total_seconds() < 3600:
             print(f"ReliefWeb: recent snapshot retained ({old_meta['count']} reports)")
