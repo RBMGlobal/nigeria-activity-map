@@ -1,0 +1,94 @@
+name: Update and publish events
+
+on:
+  schedule:
+    - cron: '30 11,15 * * *'
+      timezone: Europe/London
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Refresh sources or redeploy the last accepted release
+        type: choice
+        options: [refresh, redeploy]
+        default: refresh
+  push:
+    branches: [main]
+    paths:
+      - 'pipeline/**'
+      - 'index.html'
+      - '.github/workflows/events-update.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: events-publication
+  cancel-in-progress: false
+
+env:
+  TZ: Europe/London
+  MPLBACKEND: Agg
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: pipeline/requirements.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned rendering dependencies
+        run: python -m pip install --requirement pipeline/requirements.txt
+      - name: Check pipeline and map logic
+        run: |
+          python -m unittest discover -s pipeline/tests -p 'test_*.py' -v
+          node --test tests/*.test.cjs
+      - name: Build complete validated release
+        if: ${{ github.event.inputs.mode != 'redeploy' }}
+        env:
+          UCDP_TOKEN: ${{ secrets.UCDP_TOKEN }}
+        run: python pipeline/build_release.py --output build
+      - name: Prepare last accepted release for redeployment
+        if: ${{ github.event.inputs.mode == 'redeploy' }}
+        run: python pipeline/build_release.py --output build --accepted-release
+      - name: Commit accepted release and ingestion state together
+        run: python pipeline/commit_release.py --build build
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload complete public site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: build/site
+      - name: Deploy accepted release
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Verify live release bytes and source windows
+        run: python pipeline/verify_live.py --site build/site --url https://rbmglobal.co.uk/nigeria-activity-map/
+      - name: Retain validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: events-release-evidence-${{ github.run_id }}
+          path: |
+            build/site/release.json
+            build/verification.json
+          if-no-files-found: ignore
+          retention-days: 30

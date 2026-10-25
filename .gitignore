@@ -1,0 +1,8 @@
+build/
+.venv/
+node_modules/
+__pycache__/
+*.py[cod]
+.env*
+.ucdp_token
+.github_token

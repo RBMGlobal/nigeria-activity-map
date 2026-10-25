@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "imported_on": "2026-10-25",
+  "source_workspace": "RBM-System/publishing/nigeria/scripts",
+  "scripts": {
+    "update_events_map.py": {
+      "original_sha256": "669322181b6bbe4d15725c0c97e246aad7ab499e6551cfffb3e12c2f66df46a3",
+      "packaged_sha256": "20d87965909ebbb57660660a88de456ec55d928215f3e37d8f9c70a440678ee5",
+      "portability_change": "Added strict response/pagination completeness checks and script-safe JSON embedding; collection selection and version discovery unchanged."
+    },
+    "update_gdelt_layer.py": {
+      "original_sha256": "d6c9ff9ffe67c1b9113b93657a49828089df7e5a24f27ecb430eaaf3645a2cf4",
+      "packaged_sha256": "3950d13b8616811ee6862c3780e26eeb50da27b6c48417c4a3209c407dc4c0a7",
+      "portability_change": "Uses HTTPS for identical daily archive paths and script-safe JSON embedding; filters/deduplication/ingestion algorithm unchanged."
+    },
+    "update_reliefweb_layer.py": {
+      "original_sha256": "f5cf5f6ed0c38d0fdea65c2e088daa9f07690b79ae5344e613398727c2a043e5",
+      "packaged_sha256": "f5cf5f6ed0c38d0fdea65c2e088daa9f07690b79ae5344e613398727c2a043e5"
+    },
+    "state_data.py": {
+      "original_sha256": "de6b6134bf9b30cd9bf7d1c22576df0806cc1ed6810f7207878e307fb804af1e",
+      "packaged_sha256": "de6b6134bf9b30cd9bf7d1c22576df0806cc1ed6810f7207878e307fb804af1e"
+    },
+    "render_events_lastweek.py": {
+      "original_sha256": "5348d6e7e8ad3298e4b0c73ea430f1a744bf5594bc1f7d658d20d5f27dda59d5",
+      "packaged_sha256": "5348d6e7e8ad3298e4b0c73ea430f1a744bf5594bc1f7d658d20d5f27dda59d5"
+    },
+    "validate_map_release.py": {
+      "original_sha256": "4c1dd0e6470e187823d99b30f7d13764168b07f11d8b396a422f36a431f3ecdd",
+      "packaged_sha256": "4c1dd0e6470e187823d99b30f7d13764168b07f11d8b396a422f36a431f3ecdd"
+    },
+    "refresh_sentiment_heat.py": {
+      "original_sha256": "75671b6b7ef5be6edc7dc085631406caf1b893f622e6c23982ed9341da6fc3e4",
+      "portability_change": "Removed publisher import and --publish branch; aggregation unchanged.",
+      "packaged_sha256": "2e075a45c926b06872b8ab43cf6fc1e9aa66a00bcb8ccceab51bd6e045987cd5"
+    }
+  },
+  "rendering_inputs": {
+    "ne_110m_admin_0_countries.geojson": {
+      "sha256": "6866c877d39cba9c357620878839b336d569f8c662d3cfab4cb1dbe2d39c977f",
+      "bytes": 838726
+    },
+    "ne_50m_west_africa.geojson": {
+      "sha256": "8b9d27a6eeac4209bc05b15fed2bf56431430b32d08fa63e646b55115fb696f7",
+      "bytes": 32638
+    },
+    "nigeria_sat_z8.json": {
+      "sha256": "d295db91ef776fe124fa2b83fc3c44856a0e3391b472580c0b31367cae539d86",
+      "bytes": 185
+    },
+    "nigeria_sat_z8.png": {
+      "sha256": "92a10e77af4ae0367bad24555ce96234c9bf396e59f1f18acfdccdbc7be41fff",
+      "bytes": 7615892
+    }
+  }
+}
