@@ -1,48 +1,48 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-31T16:12:43.948006Z",
+  "generated_at": "2026-11-01T17:11:57.850026Z",
   "mode": "source-refresh",
   "coverage": {
     "ucdp": {
-      "min_event_date": "2024-10-01",
+      "min_event_date": "2024-11-01",
       "max_event_date": "2026-09-30",
-      "events": 2291,
+      "events": 2239,
       "source_versions": "annual 26.1; candidate: 26.0.1, 26.0.2, 26.0.3, 26.0.4, 26.0.5, 26.0.6, 26.0.7, 26.0.8, 26.0.9"
     },
     "gdelt": {
       "input_from": "2026-09-23",
-      "input_through": "2026-10-30",
-      "input_days": 38,
+      "input_through": "2026-10-31",
+      "input_days": 39,
       "min_event_date": "2026-09-23",
-      "max_event_date": "2026-10-30",
-      "events": 1929
+      "max_event_date": "2026-10-31",
+      "events": 1969
     },
     "reliefweb": {
-      "from": "2026-08-03",
-      "to": "2026-10-31",
-      "fetched_at": "2026-10-31T16:13:01.672876+00:00",
+      "from": "2026-08-04",
+      "to": "2026-11-01",
+      "fetched_at": "2026-11-01T17:12:16.955351+00:00",
       "latest_publication": "2026-10-30",
-      "count": 192,
+      "count": 190,
       "refresh": "checked"
     },
     "heat": {
       "from": "2026-09-23",
-      "to": "2026-10-30"
+      "to": "2026-10-31"
     }
   },
   "warnings": [],
   "files": {
     "index.html": {
-      "sha256": "fd8a6c8e6945c5513ddf371a4665c17147b15f41987d0c3162afa784da11c743",
-      "bytes": 1369170
+      "sha256": "b9b7e9c477a4107144bf0b9007462c5cf7afcf7a3a0e3c4e6c84fa0f65b482d2",
+      "bytes": 1364578
     },
     "lastweek.png": {
-      "sha256": "be422a0c9ee6f34f52842947fd27cfdd2784301a6938fa2515b77d432b2ffa0e",
-      "bytes": 4081228
+      "sha256": "98bc167a5e3c44db2484085cd1ad52202bdf5bfc00b4033c3d8e1346784421c7",
+      "bytes": 4069328
     },
     "sentiment-gdelt.json": {
-      "sha256": "2725ec8b0e6f6f0905dfbd9aafbb12171a62495b861e50ec1e194e58152d4b83",
-      "bytes": 14410
+      "sha256": "c2a9c55d06e5dffa6ca093c68aef0375756d435af3812f47fe58ece7ece704dd",
+      "bytes": 14633
     }
   }
 }
