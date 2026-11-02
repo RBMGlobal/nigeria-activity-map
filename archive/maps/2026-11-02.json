@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "captured_on": "2026-11-02",
+  "generated_at": "2026-11-02T20:50:17.073153Z",
+  "date_basis": "Monday capture date; panel windows below are actual event dates.",
+  "ucdp": {
+    "from": "2026-09-24",
+    "to": "2026-09-30"
+  },
+  "gdelt": {
+    "from": "2026-10-26",
+    "to": "2026-11-01"
+  },
+  "gdelt_input_through": "2026-11-01",
+  "png": {
+    "sha256": "fa30f7cc37b6a9bf3f560b1bc931f3d5457ee7baa64e09695e951f08c350c9d4",
+    "bytes": 4068546
+  }
+}
