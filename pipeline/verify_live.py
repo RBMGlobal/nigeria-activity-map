@@ -42,7 +42,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--site', type=Path, required=True)
     parser.add_argument('--url', required=True)
-    parser.add_argument('--timeout', type=int, default=420)
+    parser.add_argument('--timeout', type=int, default=1200)
     args = parser.parse_args()
     deadline = time.monotonic() + args.timeout
     while True:
