@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-08T17:09:24.245182Z",
+  "generated_at": "2026-11-09T21:30:40.692673Z",
   "mode": "source-refresh",
   "coverage": {
     "ucdp": {
@@ -11,38 +11,38 @@
     },
     "gdelt": {
       "input_from": "2026-09-23",
-      "input_through": "2026-11-07",
-      "input_days": 46,
+      "input_through": "2026-11-08",
+      "input_days": 47,
       "min_event_date": "2026-09-23",
-      "max_event_date": "2026-11-07",
-      "events": 2316
+      "max_event_date": "2026-11-08",
+      "events": 2373
     },
     "reliefweb": {
-      "from": "2026-08-11",
-      "to": "2026-11-08",
-      "fetched_at": "2026-11-08T17:09:42.803182+00:00",
-      "latest_publication": "2026-11-06",
-      "count": 192,
+      "from": "2026-08-12",
+      "to": "2026-11-09",
+      "fetched_at": "2026-11-09T21:30:58.708671+00:00",
+      "latest_publication": "2026-11-09",
+      "count": 199,
       "refresh": "checked"
     },
     "heat": {
       "from": "2026-09-23",
-      "to": "2026-11-07"
+      "to": "2026-11-08"
     }
   },
   "warnings": [],
   "files": {
     "index.html": {
-      "sha256": "24ea2415defad62feeb67d8e55af4e165ab5e0bc3db5a364598b1efc558fc83e",
-      "bytes": 1463147
+      "sha256": "1db06a8f7d2ba2eda6a8277333639084f4fab857d435e961bdde23acc42253bf",
+      "bytes": 1482278
     },
     "lastweek.png": {
-      "sha256": "a6843e0b67a3615a6755536b110fda44bf5195b4ddd56a48cd10b3105cdcbfac",
-      "bytes": 4062871
+      "sha256": "8d08f58da2b42efb7cae700d3d9fe914379b1667d6a4c1684264903ca3cbf083",
+      "bytes": 4070294
     },
     "sentiment-gdelt.json": {
-      "sha256": "1447fea9412a169f97779ef62e5da52fad7402f3db8d283eb4aa855a31533010",
-      "bytes": 15463
+      "sha256": "24b22b659ea5fca6e804d1b0d7721733e05780734db92fbd3da4cddb4b18cf7a",
+      "bytes": 15740
     }
   }
 }
