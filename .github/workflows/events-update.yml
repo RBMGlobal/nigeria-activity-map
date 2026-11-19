@@ -62,12 +62,12 @@ jobs:
           python -m unittest discover -s pipeline/tests -p 'test_*.py' -v
           node --test tests/*.test.cjs
       - name: Build complete validated release
-        if: ${{ github.event.inputs.mode != 'redeploy' }}
+        if: ${{ github.event_name != 'push' && github.event.inputs.mode != 'redeploy' }}
         env:
           UCDP_TOKEN: ${{ secrets.UCDP_TOKEN }}
         run: python pipeline/build_release.py --output build
       - name: Prepare last accepted release for redeployment
-        if: ${{ github.event.inputs.mode == 'redeploy' }}
+        if: ${{ github.event_name == 'push' || github.event.inputs.mode == 'redeploy' }}
         run: python pipeline/build_release.py --output build --accepted-release
       - name: Commit accepted release and ingestion state together
         run: python pipeline/commit_release.py --build build
@@ -76,17 +76,20 @@ jobs:
       - name: Upload complete public site
         uses: actions/upload-pages-artifact@v4
         with:
+          name: events-pages-${{ github.run_attempt }}
           path: build/site
       - name: Deploy accepted release
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: events-pages-${{ github.run_attempt }}
       - name: Verify live release bytes and source windows
         run: python pipeline/verify_live.py --site build/site --url https://rbmglobal.co.uk/nigeria-activity-map/
       - name: Retain validation evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: events-release-evidence-${{ github.run_id }}
+          name: events-release-evidence-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             build/site/release.json
             build/verification.json
