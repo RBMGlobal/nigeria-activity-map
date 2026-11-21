@@ -1,48 +1,48 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-20T19:10:35.297756Z",
+  "generated_at": "2026-11-21T17:26:57.693188Z",
   "mode": "source-refresh",
   "coverage": {
     "ucdp": {
       "min_event_date": "2024-11-01",
-      "max_event_date": "2026-09-30",
-      "events": 2239,
-      "source_versions": "annual 26.1; candidate: 26.0.1, 26.0.2, 26.0.3, 26.0.4, 26.0.5, 26.0.6, 26.0.7, 26.0.8, 26.0.9"
+      "max_event_date": "2026-10-31",
+      "events": 2385,
+      "source_versions": "annual 26.1; candidate: 26.0.1, 26.0.2, 26.0.3, 26.0.4, 26.0.5, 26.0.6, 26.0.7, 26.0.8, 26.0.9, 26.0.10"
     },
     "gdelt": {
-      "input_from": "2026-09-23",
-      "input_through": "2026-11-19",
-      "input_days": 58,
-      "min_event_date": "2026-09-23",
-      "max_event_date": "2026-11-19",
-      "events": 2914
+      "input_from": "2026-10-24",
+      "input_through": "2026-11-20",
+      "input_days": 28,
+      "min_event_date": "2026-10-24",
+      "max_event_date": "2026-11-20",
+      "events": 1389
     },
     "reliefweb": {
-      "from": "2026-08-23",
-      "to": "2026-11-20",
-      "fetched_at": "2026-11-20T19:10:56.127514+00:00",
+      "from": "2026-08-24",
+      "to": "2026-11-21",
+      "fetched_at": "2026-11-21T17:27:18.129028+00:00",
       "latest_publication": "2026-11-20",
-      "count": 220,
+      "count": 219,
       "refresh": "checked"
     },
     "heat": {
-      "from": "2026-09-23",
-      "to": "2026-11-19"
+      "from": "2026-10-24",
+      "to": "2026-11-20"
     }
   },
   "warnings": [],
   "files": {
     "index.html": {
-      "sha256": "fdb98c6dfac4f6370b4c1ac74032439f35a5582a25ca3b997de12aa3abc9fc4b",
-      "bytes": 1646102
+      "sha256": "29b2181332f659f67bca8d370c49e70f3d9ddf946cfea47caa540a38aaaa93b4",
+      "bytes": 1259440
     },
     "lastweek.png": {
-      "sha256": "15bd2073e549441cede4018a777db9b9c5b3febb11b6ac97b318a3492af17e83",
-      "bytes": 4066575
+      "sha256": "5044570f88327cca3f70b6510931a9aed5704ed5ea8ab188c050c648167a076c",
+      "bytes": 3937794
     },
     "sentiment-gdelt.json": {
-      "sha256": "c0d15077359fa3f82fdc9ffe9782833ebf734731465ceac9707cced59c537d08",
-      "bytes": 16882
+      "sha256": "b54b5d97fb579c8937049392341946cfe94a099bba7ce9d432cc4eb553377d02",
+      "bytes": 10652
     }
   }
 }
